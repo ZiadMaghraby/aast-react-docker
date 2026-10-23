@@ -19,6 +19,6 @@ jobs:
         run: |
           docker run -d -p 8080:80 --name hello aast-react-hello
           trap 'docker logs hello; docker rm -f hello' EXIT
-          curl --retry 10 --retry-connrefused --retry-delay 1 --fail http://localhost:8080/ -o /tmp/index.html
+          curl --retry 10 --retry-all-errors --retry-delay 1 --max-time 5 --fail http://localhost:8080/ -o /tmp/index.html
           grep -q '<div id="root"></div>' /tmp/index.html
           docker exec hello sh -c 'grep -rq "Hello World!!!" /usr/share/nginx/html/assets'
